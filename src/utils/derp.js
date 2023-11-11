@@ -1,7 +1,17 @@
+/** Constants */
 export const HAPPY_DERPS = [];
 const DERP_VARIANTS = ["hallelujah", "normal", "big"];
 export const DERP_DICTIONARY = [".__.", "•__•", "(๑•̀ㅂ•́)و", ";—;", "/.__./"];
 
+/**
+ * Creates a variable size and num derp.
+ *
+ * Note: Only hallelujah derp vaies by the "num" since
+ * the other variants look wierd.
+ * @param {string} variant type of derp
+ * @param {int} size how large (wide) the derp is
+ * @param {int} num the number of derps to return
+ */
 const createNLengthDerp = (variant, size, num) => {
   let res = "";
   if (variant === "hallelujah") {
@@ -15,10 +25,21 @@ const createNLengthDerp = (variant, size, num) => {
   return res;
 };
 
+/**
+ * Selects a random element from an array
+ * @param {Array} arr Array of elements
+ * @returns {string} An element from the array
+ */
 const selectRandomElement = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
+/**
+ * Gets a random integer from min and max
+ * inclusive.
+ * @param {int} min The minimum integer value
+ * @param {int} max The maximum integer value
+ */
 export function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -28,7 +49,7 @@ export function getRandomInt(min, max) {
  * Generates a derp arbitrarily based
  * on a set input. Creates derp variants.
  */
-export const generateDerp = (vibes) => {
+export const generateDerp = () => {
   // 1) Random derp selection
   let randomElement = selectRandomElement(DERP_DICTIONARY);
 

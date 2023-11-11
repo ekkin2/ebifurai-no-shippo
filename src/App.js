@@ -1,3 +1,16 @@
+/**
+ * App.js
+ *
+ * This file is the main screen of the application
+ * containing the user interface to interact with and
+ * communicate with Bao the virtual pet.
+ *
+ * The user can chat with Bao or interact with him via
+ * Hug or Boop actions.
+ *
+ * Bao responds with variants of derps based on the emotional
+ * state of the messages.
+ */
 import React, { useState } from "react";
 import ebifurai from "./images/ebifurai.png";
 import hug from "./images/hug.png";
