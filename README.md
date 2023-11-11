@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Ebifurai No Shippo (virtual pet ver.)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
