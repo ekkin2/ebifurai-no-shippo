@@ -1,3 +1,11 @@
+/**
+ * derp.js
+ *
+ * Util file containing functions that can
+ * generate different styles of derps.
+ *
+ */
+
 /** Constants */
 export const HAPPY_DERPS = [];
 const DERP_VARIANTS = ["hallelujah", "normal", "big"];
