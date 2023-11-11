@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ebifurai from "./images/ebifurai.png";
 import hug from "./images/hug.png";
 import boop from "./images/boop.png";
-
 import {
   Box,
   Typography,
@@ -11,15 +10,12 @@ import {
   CardContent,
   CardMedia,
 } from "@mui/material";
-
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
   ChatContainer,
   MessageList,
   Message,
   MessageInput,
-  MessageSeparator,
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 
@@ -27,6 +23,11 @@ import BorderLinearProgress from "./components/BorderLinearProgress";
 import { generateDerp, getRandomInt } from "./utils/derp";
 import "./App.css";
 
+/**
+ * @param {string} name text to be displayed on action card
+ * @param {Image} img image asset as a local file object to be displayed
+ * @param {CallableFunction} onClick callback function on actioncard press
+ */
 const ActionCard = ({ name, img, onClick }) => {
   return (
     <Card style={{ minWidth: 150, marginRight: 24 }}>
@@ -55,10 +56,18 @@ function App() {
     sender: "Bao",
   };
 
+  /** Set state variables */
   const [baoIsTyping, setBaoIsTyping] = useState(false);
   const [vibes, setVibes] = useState(50);
   const [messages, setMessages] = useState([DEFAULT_MESSAGE]);
 
+  /**
+   * Callback for when message is sent by the user.
+   * Will call emotion classifier api and give a response
+   * corresponding to the emotion of the message. Also
+   * updates vibes according to the emotional state.
+   * @param {string} message text input from the user
+   */
   const onMessageSend = (message) => {
     setMessages([
       ...messages,
@@ -72,7 +81,7 @@ function App() {
     ]);
     setBaoIsTyping(true);
 
-    // TODO: test api call to flask
+    // Api call to flask backend (ML emotion model)
     fetch(`http://127.0.0.1:5000/models/${message}`)
       .then((res) => {
         res.json().then((json) => {
@@ -80,7 +89,8 @@ function App() {
           var isSad = false;
           for (let emotionIdx in data) {
             const emotion = data[emotionIdx];
-            console.log(emotion);
+
+            // Increase vibes if joy is classified
             if (emotion.label === "joy") {
               setVibes(Math.min(100, 1.25 * vibes));
             } else if (emotion.label === "sadness") {
@@ -89,6 +99,7 @@ function App() {
             }
           }
 
+          // Decrease vibes and send energy if sadness is found
           const newDerp = generateDerp();
           setBaoIsTyping(false);
           setMessages([
@@ -109,7 +120,8 @@ function App() {
         });
       })
       .catch((err) => {
-        console.log("Error fetching emotion...");
+        // Error on fetch, still show a reply
+        console.log("Error fetching emotion...", err);
         const newDerp = generateDerp();
         setBaoIsTyping(false);
         setMessages([
@@ -128,11 +140,13 @@ function App() {
           },
         ]);
       });
-
-    // Simulate call to API delay, then output response
-    // TODO: Make actual API Call to some model hosted in Flask;
-    setTimeout(() => {}, 2000);
   };
+
+  /**
+   * Callback for when hug action card is clicked.
+   * Will trigger a derp variant along with two
+   * hearts emoji.
+   */
   const onHugActionPress = () => {
     /**
      * Choose a random derp output and add it
@@ -147,7 +161,7 @@ function App() {
     const newVibes = 1.05 * vibes;
     setVibes(Math.min(100, newVibes));
 
-    // Add derp to converesation
+    // Add derp to conversation, setTimeout to simulate thinking
     setTimeout(() => {
       setBaoIsTyping(false);
       setMessages([
@@ -161,11 +175,17 @@ function App() {
     }, 1500);
   };
 
+  /**
+   * Callback for when boop action card is
+   * clicked. Will trigger bao to message
+   * boop back along with a derp variant.
+   */
   const onBoopActionPress = () => {
     const newDerp = generateDerp();
     const message = `boop ${newDerp}`;
     setBaoIsTyping(true);
 
+    // Set timeout to simulate bao thinking
     setTimeout(() => {
       setBaoIsTyping(false);
       setMessages([
@@ -196,6 +216,7 @@ function App() {
           justifyContent: "space-between",
         }}
       >
+        {/* FLOATING BAO */}
         <Box>
           <Box
             style={{
@@ -215,27 +236,6 @@ function App() {
             <BorderLinearProgress variant="determinate" value={vibes} />
           </Box>
         </Box>
-        {/* <Box
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginBottom: 36,
-          }}
-        >
-          <Typography variant={"h5"} style={{ marginBottom: 24 }}>
-            Ebifurai No Shippo (Bao)
-          </Typography>
-          <img src={ebifurai} className="App-logo" alt="logo" />
-        </Box>
-
-     
-        <Box>
-          <Box>
-            <Typography>Vibes</Typography>
-            <BorderLinearProgress variant="determinate" value={vibes} />
-          </Box>
-        </Box> */}
 
         {/* ACTIONS */}
         <Box style={{}}>
@@ -266,23 +266,6 @@ function App() {
         {baoIsTyping ? <TypingIndicator content="Bao is musing" /> : <></>}
       </Box>
     </Box>
-
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
 
