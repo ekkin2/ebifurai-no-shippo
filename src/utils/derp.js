@@ -48,6 +48,7 @@ export function getRandomInt(min, max) {
 /**
  * Generates a derp arbitrarily based
  * on a set input. Creates derp variants.
+ * @returns {string} Random derp variant
  */
 export const generateDerp = () => {
   // 1) Random derp selection

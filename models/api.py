@@ -1,3 +1,10 @@
+"""
+api.py
+
+Flask backend to return outputs of a emotion 
+text classifier model to the front-end.
+"""
+
 from transformers import pipeline
 from flask import Flask, jsonify, request 
 from flask_cors import CORS, cross_origin
